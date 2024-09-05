@@ -24,12 +24,12 @@
         <tbody>
             {% for update in transaction_auto_updates %}
             <tr>
-                <td>{{ update.bank_account }}</td>
+                <td>{{ update.bank_account_rel.name }}</td>
                 <td>{{ update.description }}</td>
                 <td>{{ update.notes }}</td>
                 <td>{{ update.memo_bank_split }}</td>
                 <td>{{ update.memo_other_split }}</td>
-                <td>{{ update.other_account }}</td>
+                <td>{{ update.other_account_rel.name }}</td>
                 <td>{{ update.search_term }}</td>
                 <td>
                     <a href="{{ url_for('main.edit_transaction_auto_update', id=update.id) }}">Edit</a>

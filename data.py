@@ -43,3 +43,5 @@ class TransactionAutoUpdate(db.Model):
     memo_other_split = db.Column(db.String)
     other_account = db.Column(db.String, db.ForeignKey('accounts.guid'))
     search_term = db.Column(db.String)
+    bank_account_rel = db.relationship('Account', foreign_keys=[bank_account])
+    other_account_rel = db.relationship('Account', foreign_keys=[other_account])
