@@ -34,7 +34,7 @@ def add_transaction_auto_update():
     return render_template('add_transaction_auto_update.html', form=form)
 
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])
-def edit_search_term(id):
+def edit_transaction_auto_update(id):
     update = TransactionAutoUpdate.query.get_or_404(id)
     form = TransactionAutoUpdateForm(obj=update)
     form.bank_account.choices = [(a.guid, a.name) for a in Account.query.all()]
