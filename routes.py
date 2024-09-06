@@ -13,8 +13,8 @@ def index():
 @main.route('/add', methods=['GET', 'POST'])
 def add_transaction_auto_update():
     form = TransactionAutoUpdateForm()
-    form.bank_account.choices = [(a.guid, a.name) for a in Account.query.all()]
-    form.other_account.choices = [(a.guid, a.name) for a in Account.query.all()]
+    form.bank_account.choices = [(a.guid, a.name) for a in Account.query.order_by(Account.name).all()]
+    form.other_account.choices = [(a.guid, a.name) for a in Account.query.order_by(Account.name).all()]
     
     if form.validate_on_submit():
         new_transaction_auto_update = TransactionAutoUpdate(
@@ -37,8 +37,8 @@ def add_transaction_auto_update():
 def edit_transaction_auto_update(id):
     update = TransactionAutoUpdate.query.get_or_404(id)
     form = TransactionAutoUpdateForm(obj=update)
-    form.bank_account.choices = [(a.guid, a.name) for a in Account.query.all()]
-    form.other_account.choices = [(a.guid, a.name) for a in Account.query.all()]
+    form.bank_account.choices = [(a.guid, a.name) for a in Account.query.order_by(Account.name).all()]
+    form.other_account.choices = [(a.guid, a.name) for a in Account.query.order_by(Account.name).all()]
     
     if form.validate_on_submit():
         update.bank_account = form.bank_account.data
