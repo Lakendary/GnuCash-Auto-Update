@@ -77,6 +77,7 @@ def update_transactions():
         # Filter transactions based on search term and date range
         transactions = Transaction.query.filter(Transaction.post_date.between(start_date, end_date),
                                                 Transaction.description.ilike(f"%{update.search_term}%")).all()
+        print(f'Number of transaction found: {len(transactions)}')
         for txn in transactions:
             txn.description = update.description
             note = Slot.query.filter_by(obj_guid=txn.guid, name='notes').first()
