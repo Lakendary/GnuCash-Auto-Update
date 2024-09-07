@@ -72,12 +72,22 @@ def update_transactions():
         flash('Please provide both start and end dates.', 'danger')
         return redirect(url_for('main.index'))
     
+    total_updated_transactions = 0
+
     transaction_auto_update = TransactionAutoUpdate.query.all()
     for update in transaction_auto_update:
         # Filter transactions based on search term and date range
-        transactions = Transaction.query.filter(Transaction.post_date.between(start_date, end_date),
-                                                Transaction.description.ilike(f"%{update.search_term}%")).all()
-        print(f'Number of transaction found: {len(transactions)}')
+        transactions = Transaction.query.filter(
+            Transaction.post_date >= start_date, 
+            Transaction.post_date <= end_date, 
+            Transaction.description.ilike(f"%{update.search_term}%")
+            ).all()
+
+        num_transactions_found = len(transactions)
+        print(f"Search term '{update.search_term}' found {num_transactions_found} transactions.")
+
+        total_updated_transactions += num_transactions_found
+
         for txn in transactions:
             txn.description = update.description
             note = Slot.query.filter_by(obj_guid=txn.guid, name='notes').first()
@@ -94,5 +104,7 @@ def update_transactions():
             
             db.session.commit()
     
-    flash('Transactions updated successfully!', 'success')
+    # Flash message indicating how many transactions were updated
+    flash(f'Total number of transactions updated: {total_updated_transactions}', 'success')
+
     return redirect(url_for('main.index'))
