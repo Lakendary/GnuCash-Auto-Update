@@ -84,10 +84,11 @@ def update_transactions():
             if note:
                 note.string_val = update.notes
 
-            splits = Split.query.filter_by(tx_guid=txn.guid, reconcile_state='c').all()
+            splits = Split.query.filter_by(tx_guid=txn.guid).all()
             for split in splits:
                 if split.account_guid == update.bank_account:
-                    split.memo = update.memo_bank_split
+                    if split.reconcile_state == 'c':
+                        split.memo = update.memo_bank_split
                 elif split.account_guid == update.other_account:
                     split.memo = update.memo_other_split
             
