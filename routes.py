@@ -74,8 +74,13 @@ def update_transactions():
     
     total_updated_transactions = 0
 
-    transaction_auto_update = TransactionAutoUpdate.query.all()
-    for update in transaction_auto_update:
+    # Iterate over all transaction auto updates
+    transaction_auto_updates = TransactionAutoUpdate.query.all()
+    for update in transaction_auto_updates:
+        # Sort and concatenate bank_account and other_account GUIDs with a hyphen
+        update_guids = sorted([update.bank_account, update.other_account])
+        update_guid_str = '-'.join(update_guids)
+
         # Filter transactions based on search term and date range
         transactions = Transaction.query.filter(
             Transaction.post_date >= start_date, 
@@ -85,24 +90,36 @@ def update_transactions():
 
         num_transactions_found = len(transactions)
         print(f"Search term '{update.search_term}' found {num_transactions_found} transactions.")
-
         total_updated_transactions += num_transactions_found
 
+        # Iterate over the filtered transactions
         for txn in transactions:
-            txn.description = update.description
-            note = Slot.query.filter_by(obj_guid=txn.guid, name='notes').first()
-            if note:
-                note.string_val = update.notes
-
+             # Get all splits for the transaction
             splits = Split.query.filter_by(tx_guid=txn.guid).all()
-            for split in splits:
-                if split.account_guid == update.bank_account:
-                    if split.reconcile_state == 'c':
-                        split.memo = update.memo_bank_split
-                elif split.account_guid == update.other_account:
-                    split.memo = update.memo_other_split
-            
-            db.session.commit()
+
+            # Sort and concatenate the account_guid of each split with a hyphen
+            split_guids = sorted([split.account_guid for split in splits])
+            split_guid_str = '-'.join(split_guids)
+
+            # Compare the concatenated GUID string from TransactionAutoUpdate with the one from the splits
+            if update_guid_str == split_guid_str:
+                # If the concatenated strings match, proceed with updating the transaction
+                txn.description = update.description
+                note = Slot.query.filter_by(obj_guid=txn.guid, name='notes').first()
+                if note:
+                    note.string_val = update.notes
+
+                # Update split memos only for non-reconciled transactions
+                for split in splits:
+                    if split.account_guid == update.bank_account:
+                        if split.reconcile_state == 'c': # Only update if checked
+                            split.memo = update.memo_bank_split
+                    elif split.account_guid == update.other_account:
+                        if split.reconcile_state == 'n':  # Only update if not reconciled
+                            split.memo = update.memo_other_split
+                
+                # Commit changes to the transaction and its splits
+                db.session.commit()
     
     # Flash message indicating how many transactions were updated
     flash(f'Total number of transactions updated: {total_updated_transactions}', 'success')
