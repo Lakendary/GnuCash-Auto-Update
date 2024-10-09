@@ -88,10 +88,6 @@ def update_transactions():
             Transaction.description.ilike(f"%{update.search_term}%")
             ).all()
 
-        num_transactions_found = len(transactions)
-        print(f"Search term '{update.search_term}' found {num_transactions_found} transactions.")
-        total_updated_transactions += num_transactions_found
-
         # Iterate over the filtered transactions
         for txn in transactions:
              # Get all splits for the transaction
@@ -117,7 +113,10 @@ def update_transactions():
                     elif split.account_guid == update.other_account:
                         if split.reconcile_state == 'n':  # Only update if not reconciled
                             split.memo = update.memo_other_split
-                
+
+                # Update updated transactions count            
+                total_updated_transactions += 1
+
                 # Commit changes to the transaction and its splits
                 db.session.commit()
     
