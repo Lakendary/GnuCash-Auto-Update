@@ -7,8 +7,29 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    transaction_auto_updates = TransactionAutoUpdate.query.all()
-    return render_template('index.html', transaction_auto_updates=transaction_auto_updates)
+    # Get the filter values from the query string
+    bank_account_guid = request.args.get('bank_account')
+    other_account_guid = request.args.get('other_account')
+
+    # Base query to get all transaction auto updates
+    query = TransactionAutoUpdate.query
+
+    # Apply filtering based on the selected bank account
+    if bank_account_guid:
+        query = query.filter(TransactionAutoUpdate.bank_account == bank_account_guid)
+
+    # Apply filtering based on the selected other account
+    if other_account_guid:
+        query = query.filter(TransactionAutoUpdate.other_account == other_account_guid)
+
+    # Execute the query
+    transaction_auto_updates = query.all()
+
+    # Fetch all accounts to populate the dropdowns
+    accounts = Account.query.order_by(Account.name).all()
+
+    return render_template('index.html', transaction_auto_updates=transaction_auto_updates, accounts=accounts)
+
 
 @main.route('/add', methods=['GET', 'POST'])
 def add_transaction_auto_update():

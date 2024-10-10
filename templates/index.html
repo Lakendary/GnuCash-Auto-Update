@@ -6,7 +6,36 @@ Manage Transaction Auto Updates
 
 {% block content %}
 <h1>Manage Transaction Auto Updates</h1>
-<a href="{{ url_for('main.add_transaction_auto_update') }}">Add Transaction Auto Update</a>
+
+<!-- Filter Form -->
+<form action="{{ url_for('main.index') }}" method="get" class="form-inline mb3">
+    <div class="form-group mr-2">
+        <label for="bank_account" class="mr-2">Bank Account:</label>
+        <select name="bank_account" id="bank_account" class="form-control">
+            <option value="">All</option>
+            {% for account in accounts %}
+            <option value="{{ account.guid }}" {% if request.args.get('bank_account')==account.guid %}selected{% endif %}>
+                {{ account.name }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group mr-2">
+        <label for="other_account" class="mr-2">Other Account:</label>
+        <select name="other_account" id="other_account" class="form-control">
+            <option value="">All</option>
+            {% for account in accounts %}
+            <option value="{{ account.guid }}" {% if request.args.get('other_account')==account.guid %} select {% endif %}>
+                {{ account.name }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
+<!-- Transactions Table -->
 <table class="table table-bordered">
     <thead class="thead-dark">
         <tr>
@@ -35,13 +64,15 @@ Manage Transaction Auto Updates
                 <form action="{{ url_for('main.delete_transaction_auto_update', id=update.id) }}" method="POST"
                     style="display:inline;">
                     <button class="btn btn-danger" type="submit"
-                        onclick="return confirm('Are you sure you want to delete this transaction auto update?');"><i class="bi bi-trash-fill"></i></button>
+                        onclick="return confirm('Are you sure you want to delete this transaction auto update?');"><i
+                            class="bi bi-trash-fill"></i></button>
                 </form>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+<!-- Update Transactions -->
 <h2>Update Transactions</h2>
 <form action="{{ url_for('main.update_transactions') }}" method="POST">
     <label for="start_date">Start Date:</label>
