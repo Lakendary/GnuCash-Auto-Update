@@ -30,6 +30,13 @@ def index():
 
     return render_template('index.html', transaction_auto_updates=transaction_auto_updates, accounts=accounts)
 
+@main.route('/update/<int:id>', methods=['GET'])
+def detail_transaction_auto_update(id):
+    # Fetch the transaction auto update object by ID
+    transaction_auto_update = TransactionAutoUpdate.query.get_or_404(id)
+    
+    # Render the detail template and pass the transaction auto update object
+    return render_template('detail_transaction_auto_update.html', transaction_auto_update=transaction_auto_update)
 
 @main.route('/add', methods=['GET', 'POST'])
 def add_transaction_auto_update():

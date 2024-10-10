@@ -101,7 +101,7 @@ Manage Transaction Auto Updates
     <tbody>
         {% for update in transaction_auto_updates %}
         <tr>
-            <th scope="row">{{ update.description }}</th>
+            <th scope="row"> <a href="{{ url_for('main.detail_transaction_auto_update', id=update.id) }}"> {{ update.description }} </a></th>
             <td>{{ update.notes }}</td>
             <td>{{ update.bank_account_rel.name }}</td>
             <td>{{ update.other_account_rel.name }}</td>

@@ -1,0 +1,57 @@
+<!-- templates/transaction_auto_update_detail.html -->
+{% extends "base.html" %}
+
+{% block title %}
+    Transaction Auto Update Details
+{% endblock %}
+
+{% block content %}
+<h1>Transaction Auto Update Details</h1>
+
+<!-- Bootstrap Table to display transaction auto update properties -->
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Property</th>
+            <th scope="col">Detail</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">ID</th>
+            <td>{{ transaction_auto_update.id }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Description</th>
+            <td>{{ transaction_auto_update.description }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Notes</th>
+            <td>{{ transaction_auto_update.notes }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Memo for Bank Split</th>
+            <td>{{ transaction_auto_update.memo_bank_split }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Memo for Other Split</th>
+            <td>{{ transaction_auto_update.memo_other_split }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Bank Account</th>
+            <td>{{ transaction_auto_update.bank_account_rel.name }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Other Account</th>
+            <td>{{ transaction_auto_update.other_account_rel.name }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Search Term</th>
+            <td>{{ transaction_auto_update.search_term }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Back Button -->
+<a href="{{ url_for('main.index') }}" class="btn btn-primary">Back to List</a>
+{% endblock %}
