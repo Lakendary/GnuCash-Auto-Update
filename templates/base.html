@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}My Flask App{% endblock %}</title>
+    <title>{% block title %}GnuCash Auto Update{% endblock %}</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons CSS -->
@@ -15,7 +15,7 @@
 
     <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{{ url_for('main.index') }}">My Flask App</a>
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">GnuCash Auto Update</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -23,9 +23,6 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.add_transaction_auto_update') }}">New Update</a>
                 </li>
             </ul>
         </div>
@@ -39,7 +36,7 @@
     <!-- Footer -->
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container">
-            <span class="text-muted">&copy; 2024 My Flask App</span>
+            <span class="text-muted">&copy; 2024 GnuCash Auto Update</span>
         </div>
     </footer>
 

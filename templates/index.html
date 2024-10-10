@@ -25,7 +25,10 @@ Manage Transaction Auto Updates
 <br>
 <!-- Update Transactions Banner -->
 <div class="container">
-    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#update-transactions-container"
+    <a href="{{ url_for('main.add_transaction_auto_update') }}" class="btn btn-success btn-lg" type="button">
+        Add an Update
+    </a>
+    <button class="btn btn-primary btn-lg" type="button" data-toggle="collapse" data-target="#update-transactions-container"
         aria-expanded="false" aria-controls="update-transactions-container">
         Update Transactions
     </button>
