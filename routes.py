@@ -120,7 +120,7 @@ def update_transactions():
         for txn in transactions:
              # Get all splits for the transaction
             splits = Split.query.filter_by(tx_guid=txn.guid).all()
-
+            print(f'transaction found: {txn.description}')
             # Sort and concatenate the account_guid of each split with a hyphen
             split_guids = sorted([split.account_guid for split in splits])
             split_guid_str = '-'.join(split_guids)
